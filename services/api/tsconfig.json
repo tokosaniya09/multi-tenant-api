@@ -11,7 +11,8 @@
     "useDefineForClassFields": false,
 
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["node", "express"]
   },
   "include": ["src/**/*.ts"]
 }
