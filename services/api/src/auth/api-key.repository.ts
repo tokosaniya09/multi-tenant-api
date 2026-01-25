@@ -9,7 +9,7 @@ export class ApiKeyRepository {
         const result = await this.db.getPool().query(
             `
             SELECT tenant_id
-            FROM api_key
+            FROM api_keys
             WHERE key_hash = $1
                 AND revoked_at IS NULL
             `,

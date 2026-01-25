@@ -6,6 +6,6 @@ import { ApiKeyRepository } from "./api-key.repository";
 @Module({
     imports: [InfraModule],
     providers: [ApiKeyRepository, ApiKeyGuard],
-    exports: [ApiKeyGuard],
+    exports: [ApiKeyGuard, ApiKeyRepository],
 })
 export class AuthModule {}
