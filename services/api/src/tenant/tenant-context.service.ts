@@ -1,25 +1,23 @@
-import { Injectable, Scope } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
+import { AsyncLocalStorage } from 'async_hooks';
 
 export interface TenantContext {
     id: string;
 }
 
-@Injectable() 
+@Injectable()
 export class TenantContextService {
-    private tenant: TenantContext | null = null;
+    private readonly als = new AsyncLocalStorage<TenantContext>();
 
     setTenant(tenant: TenantContext) {
-        this.tenant = tenant;
+        this.als.enterWith(tenant);
     }
 
     getTenant(): TenantContext {
-        if (!this.tenant) {
+        const tenant = this.als.getStore();
+        if (!tenant) {
             throw new Error('TenantContext not initialized');
         } 
-        return this.tenant;
-    }
-
-    clear() {
-        this.tenant = null;
+        return tenant;
     }
 }
