@@ -6,6 +6,7 @@ import { RateLimitModule } from "./rate-limit/rate-limit.module";
 import { RateLimitGuard } from "./rate-limit/rate-limit.guard";
 import { APP_GUARD } from "@nestjs/core/constants";
 import { ApiKeyGuard } from "./auth/api-key.guard";
+import { TenantModule } from "./tenant/tenant.module";
 
 @Module({
     imports: [
@@ -13,6 +14,7 @@ import { ApiKeyGuard } from "./auth/api-key.guard";
         HealthModule,
         AuthModule,
         RateLimitModule,
+        TenantModule
     ],
     providers: [
         {
