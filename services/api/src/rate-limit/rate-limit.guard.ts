@@ -1,6 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { RateLimitService } from "./rate-limit.service";
-import { Request } from 'express';
 import { TenantContextService } from "../tenant/tenant-context.service";
 
 @Injectable()
@@ -11,8 +10,21 @@ export class RateLimitGuard implements CanActivate {
     ) { }
     
     async canActivate(context: ExecutionContext): Promise<boolean> {
-        const tenant = this.tenantContext.getTenant();
-        await this.limiter.checkLimit(tenant.id, 10);
+        try {
+            const tenant = this.tenantContext.getTenant();
+            if (!tenant?.id) {
+                return true;
+            }
+
+            const limitPerMinute = 10;
+            await this.limiter.checkLimit(tenant.id, limitPerMinute);
+        } catch (err) {
+            if ((err as Error).message === 'TenantContext not initialized') {
+                return true;
+            }
+            throw err;
+        }
+
         return true;
     }
 }

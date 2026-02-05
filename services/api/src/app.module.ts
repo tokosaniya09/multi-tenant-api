@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { InfraModule } from "./infra/infra.module";
 import { HealthModule } from "./health/health.module";
 import { AuthModule } from "./auth/auth.module";
@@ -8,6 +8,7 @@ import { APP_GUARD } from "@nestjs/core/constants";
 import { ApiKeyGuard } from "./auth/api-key.guard";
 import { TenantModule } from "./tenant/tenant.module";
 import { JobsModule } from "./jobs/jobs.module";
+import { TenantMiddleware } from "./tenant/tenant.middleware";
 
 @Module({
     imports: [
@@ -30,4 +31,8 @@ import { JobsModule } from "./jobs/jobs.module";
     ],
 })
 
-export class AppModule {}
+export class AppModule implements NestModule{
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(TenantMiddleware).forRoutes('*');
+    }
+}

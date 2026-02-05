@@ -1,4 +1,4 @@
-āimport { Module } from "@nestjs/common";
+import { Module } from "@nestjs/common";
 import { TenantContextService } from "./tenant-context.service";
 
 @Module({
